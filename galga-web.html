@@ -1,0 +1,1313 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ornella Coacci — GALGA Estudio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0d0d0d;
+    --white: #f5f2ed;
+    --cream: #ede8e0;
+    --gold: #c9a84c;
+    --gold-light: #e8c96d;
+    --muted: #7a7470;
+    --accent: #1a1a1a;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* Custom cursor */
+  .cursor {
+    position: fixed;
+    width: 12px; height: 12px;
+    background: var(--gold);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s, width 0.3s, height 0.3s, background 0.3s;
+  }
+  .cursor-ring {
+    position: fixed;
+    width: 36px; height: 36px;
+    border: 1px solid var(--gold);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: transform 0.15s ease-out, width 0.3s, height 0.3s, opacity 0.3s;
+    opacity: 0.5;
+  }
+  body:hover .cursor { opacity: 1; }
+
+  a, button { cursor: none; }
+  a:hover ~ .cursor, button:hover ~ .cursor { transform: translate(-50%,-50%) scale(2); }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 3px; }
+  ::-webkit-scrollbar-track { background: var(--black); }
+  ::-webkit-scrollbar-thumb { background: var(--gold); }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.5rem 3rem;
+    mix-blend-mode: difference;
+  }
+  .nav-logo {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.85rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--white);
+    text-decoration: none;
+  }
+  .nav-links {
+    display: flex; gap: 2.5rem; list-style: none;
+  }
+  .nav-links a {
+    color: var(--white);
+    text-decoration: none;
+    font-size: 0.8rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    opacity: 0.7;
+    transition: opacity 0.3s;
+  }
+  .nav-links a:hover { opacity: 1; }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    padding: 0 3rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg-text {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(120px, 20vw, 280px);
+    font-weight: 900;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(201,168,76,0.08);
+    white-space: nowrap;
+    pointer-events: none;
+    user-select: none;
+    letter-spacing: -0.05em;
+  }
+
+  .hero-left {
+    position: relative; z-index: 2;
+    padding-top: 6rem;
+  }
+
+  .hero-eyebrow {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 2rem;
+    display: flex; align-items: center; gap: 1rem;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    display: block;
+    width: 40px; height: 1px;
+    background: var(--gold);
+  }
+
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3rem, 6vw, 6rem);
+    font-weight: 900;
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.5rem;
+  }
+  .hero-title em {
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .hero-tagline {
+    font-size: 1.1rem;
+    color: rgba(245,242,237,0.6);
+    max-width: 420px;
+    line-height: 1.7;
+    margin-bottom: 3rem;
+  }
+
+  .hero-ctas {
+    display: flex; gap: 1rem; align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    background: var(--gold);
+    color: var(--black);
+    padding: 0.9rem 2.2rem;
+    text-decoration: none;
+    font-size: 0.85rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    font-weight: 500;
+    transition: background 0.3s, transform 0.2s;
+    display: inline-block;
+  }
+  .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); }
+
+  .btn-outline {
+    border: 1px solid rgba(245,242,237,0.3);
+    color: var(--white);
+    padding: 0.9rem 2.2rem;
+    text-decoration: none;
+    font-size: 0.85rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    transition: border-color 0.3s, transform 0.2s;
+    display: inline-block;
+  }
+  .btn-outline:hover { border-color: var(--gold); color: var(--gold); transform: translateY(-2px); }
+
+  /* INSTAGRAM CARD */
+  .hero-right {
+    position: relative; z-index: 2;
+    display: flex; justify-content: center; align-items: center;
+    padding-top: 6rem;
+  }
+
+  .ig-card {
+    background: #1a1a1a;
+    border: 1px solid rgba(201,168,76,0.2);
+    width: 320px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .ig-card::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(201,168,76,0.05) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  .ig-header {
+    padding: 1.5rem;
+    display: flex; align-items: center; gap: 1rem;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .ig-avatar-wrap {
+    position: relative;
+    width: 72px; height: 72px;
+    flex-shrink: 0;
+  }
+
+  .ig-avatar-ring {
+    position: absolute; inset: -3px;
+    border-radius: 50%;
+    background: conic-gradient(from 0deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888, #f09433);
+    animation: spin 4s linear infinite;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .ig-avatar {
+    position: absolute; inset: 3px;
+    border-radius: 50%;
+    background: #2a2a2a;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+    border: 2px solid #1a1a1a;
+  }
+
+  .ig-avatar-initials {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: var(--gold);
+  }
+
+  .ig-info { flex: 1; }
+
+  .ig-name {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--white);
+    display: flex; align-items: center; gap: 6px;
+    margin-bottom: 2px;
+  }
+
+  .ig-verified {
+    width: 16px; height: 16px;
+    background: #1877f2;
+    border-radius: 50%;
+    display: inline-flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .ig-verified svg { width: 9px; height: 9px; }
+
+  .ig-handle {
+    font-size: 0.75rem;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+
+  .ig-category {
+    font-size: 0.7rem;
+    color: var(--gold);
+    font-family: 'Space Mono', monospace;
+    letter-spacing: 0.1em;
+  }
+
+  .ig-stats {
+    display: grid; grid-template-columns: repeat(3,1fr);
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    text-align: center;
+  }
+
+  .ig-stat-num {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--white);
+    font-family: 'Space Mono', monospace;
+  }
+
+  .ig-stat-label {
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .ig-bio {
+    padding: 1rem 1.5rem;
+    font-size: 0.8rem;
+    color: rgba(245,242,237,0.7);
+    line-height: 1.5;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .ig-actions {
+    padding: 0.75rem 1.5rem;
+    display: flex; gap: 0.5rem;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .ig-btn {
+    flex: 1;
+    padding: 0.4rem;
+    font-size: 0.7rem;
+    text-align: center;
+    border-radius: 4px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+  }
+  .ig-btn-solid { background: var(--gold); color: var(--black); }
+  .ig-btn-ghost { border: 1px solid rgba(255,255,255,0.2); color: var(--white); }
+
+  .ig-grid {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 2px;
+    padding: 2px;
+  }
+
+  .ig-post {
+    aspect-ratio: 1;
+    background: #222;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .ig-post-placeholder {
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    color: var(--gold);
+    opacity: 0.3;
+    font-style: italic;
+  }
+
+  /* Decorative elements */
+  .hero-decoration {
+    position: absolute;
+    bottom: 3rem; left: 3rem;
+    display: flex; align-items: center; gap: 1rem;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+  .hero-decoration::before {
+    content: '';
+    width: 60px; height: 1px;
+    background: var(--muted);
+  }
+
+  .scroll-indicator {
+    position: absolute;
+    bottom: 3rem; right: 3rem;
+    display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    color: var(--muted);
+    text-transform: uppercase;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+  }
+  .scroll-indicator::after {
+    content: '';
+    width: 1px; height: 50px;
+    background: linear-gradient(to bottom, var(--muted), transparent);
+    animation: pulse-line 2s ease-in-out infinite;
+  }
+  @keyframes pulse-line {
+    0%,100% { opacity: 0.4; }
+    50% { opacity: 1; }
+  }
+
+  /* ABOUT */
+  section { padding: 8rem 3rem; }
+
+  .section-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1rem;
+    display: flex; align-items: center; gap: 1rem;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(201,168,76,0.2);
+    max-width: 80px;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    margin-bottom: 2rem;
+  }
+  .section-title em { font-style: italic; color: var(--gold); }
+
+  /* ABOUT LAYOUT */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    align-items: center;
+  }
+
+  .about-text p {
+    color: rgba(245,242,237,0.65);
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+    font-size: 1rem;
+  }
+
+  .about-text p strong {
+    color: var(--white);
+    font-weight: 500;
+  }
+
+  .skills-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 2rem;
+  }
+
+  .skill-tag {
+    border: 1px solid rgba(201,168,76,0.3);
+    color: var(--gold);
+    padding: 0.4rem 1rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    font-family: 'Space Mono', monospace;
+    transition: background 0.3s;
+  }
+  .skill-tag:hover { background: rgba(201,168,76,0.1); }
+
+  .about-visual {
+    position: relative;
+  }
+
+  .about-card {
+    background: #161616;
+    border: 1px solid rgba(201,168,76,0.15);
+    padding: 3rem;
+    position: relative;
+  }
+
+  .about-card::before {
+    content: '';
+    position: absolute;
+    top: -1px; left: 2rem; right: 2rem;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  }
+
+  .about-quote {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-style: italic;
+    line-height: 1.5;
+    color: var(--white);
+    margin-bottom: 2rem;
+  }
+
+  .about-quote-author {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+    text-transform: uppercase;
+  }
+
+  .about-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    margin-top: 2rem;
+    background: rgba(255,255,255,0.05);
+  }
+
+  .about-stat {
+    background: #161616;
+    padding: 1.5rem;
+    text-align: center;
+  }
+
+  .about-stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: var(--gold);
+    display: block;
+  }
+
+  .about-stat-label {
+    font-size: 0.7rem;
+    color: var(--muted);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-family: 'Space Mono', monospace;
+  }
+
+  /* SERVICES */
+  .services-section {
+    background: #0a0a0a;
+  }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    margin-top: 4rem;
+    background: rgba(255,255,255,0.05);
+  }
+
+  .service-card {
+    background: #0a0a0a;
+    padding: 2.5rem 2rem;
+    transition: background 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .service-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    transform: scaleX(0);
+    transition: transform 0.4s;
+  }
+
+  .service-card:hover { background: #111; }
+  .service-card:hover::after { transform: scaleX(1); }
+
+  .service-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem;
+    font-weight: 900;
+    color: rgba(201,168,76,0.1);
+    line-height: 1;
+    margin-bottom: 1rem;
+    font-style: italic;
+  }
+
+  .service-title {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--white);
+    margin-bottom: 1rem;
+  }
+
+  .service-desc {
+    font-size: 0.85rem;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  /* GALLERY */
+  .gallery-intro {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 4rem;
+    align-items: end;
+    margin-bottom: 4rem;
+  }
+
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: auto;
+    gap: 8px;
+  }
+
+  .gallery-item {
+    background: #1a1a1a;
+    overflow: hidden;
+    position: relative;
+    aspect-ratio: 1;
+  }
+
+  .gallery-item:first-child {
+    grid-column: span 2;
+    grid-row: span 2;
+    aspect-ratio: auto;
+  }
+
+  .gallery-placeholder {
+    width: 100%; height: 100%; min-height: 200px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    color: var(--gold);
+    opacity: 0.2;
+    font-style: italic;
+    background: linear-gradient(135deg, #1a1a1a, #222);
+    transition: opacity 0.3s;
+  }
+
+  .gallery-item:hover .gallery-placeholder { opacity: 0.4; }
+
+  .gallery-overlay {
+    position: absolute; inset: 0;
+    background: rgba(0,0,0,0.6);
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .gallery-item:hover .gallery-overlay { opacity: 1; }
+
+  .gallery-overlay-text {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    color: var(--gold);
+    text-transform: uppercase;
+  }
+
+  /* METRICS */
+  .metrics-section {
+    background: var(--gold);
+    color: var(--black);
+  }
+
+  .metrics-section .section-label { color: rgba(13,13,13,0.5); }
+  .metrics-section .section-label::after { background: rgba(13,13,13,0.2); }
+  .metrics-section .section-title { color: var(--black); }
+
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+    margin-top: 4rem;
+    background: rgba(0,0,0,0.1);
+  }
+
+  .metric-item {
+    background: var(--gold);
+    padding: 3rem 2rem;
+    text-align: center;
+    transition: background 0.3s;
+  }
+  .metric-item:hover { background: var(--gold-light); }
+
+  .metric-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 3.5rem;
+    font-weight: 900;
+    color: var(--black);
+    line-height: 1;
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  .metric-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba(13,13,13,0.6);
+  }
+
+  /* CONTACT */
+  .contact-section {
+    background: #080808;
+  }
+
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    align-items: start;
+    margin-top: 4rem;
+  }
+
+  .contact-info h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-style: italic;
+    color: var(--white);
+    margin-bottom: 2rem;
+  }
+
+  .contact-links {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .contact-links a {
+    display: flex; align-items: center; gap: 1rem;
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.3s;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  .contact-links a:hover { color: var(--gold); }
+
+  .contact-link-icon {
+    width: 36px; height: 36px;
+    border: 1px solid rgba(255,255,255,0.1);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.7rem;
+    color: var(--gold);
+    font-family: 'Space Mono', monospace;
+    flex-shrink: 0;
+    transition: border-color 0.3s;
+  }
+  .contact-links a:hover .contact-link-icon { border-color: var(--gold); }
+
+  .contact-form-area {
+    display: flex; flex-direction: column; gap: 1rem;
+  }
+
+  .contact-form-area label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.3rem;
+    display: block;
+  }
+
+  .contact-form-area input,
+  .contact-form-area textarea {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding: 0.75rem 0;
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.3s;
+  }
+
+  .contact-form-area input:focus,
+  .contact-form-area textarea:focus {
+    border-bottom-color: var(--gold);
+  }
+
+  .contact-form-area textarea {
+    resize: none;
+    height: 100px;
+  }
+
+  .form-group { margin-bottom: 1.5rem; }
+
+  /* FOOTER */
+  footer {
+    background: #060606;
+    padding: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid rgba(255,255,255,0.04);
+  }
+
+  .footer-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .footer-copy {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  .footer-ig {
+    display: flex; align-items: center; gap: 0.5rem;
+    text-decoration: none;
+    color: var(--muted);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    transition: color 0.3s;
+  }
+  .footer-ig:hover { color: var(--gold); }
+  .footer-ig::before {
+    content: '';
+    width: 20px; height: 1px;
+    background: currentColor;
+  }
+
+  /* REVEAL ANIMATIONS */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    nav { padding: 1.2rem 1.5rem; }
+    .nav-links { display: none; }
+    .hero { grid-template-columns: 1fr; padding: 0 1.5rem; min-height: auto; padding-top: 6rem; padding-bottom: 4rem; gap: 3rem; }
+    .hero-right { justify-content: center; }
+    section { padding: 5rem 1.5rem; }
+    .about-grid, .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
+    .services-grid { grid-template-columns: 1fr; }
+    .gallery-grid { grid-template-columns: repeat(2,1fr); }
+    .gallery-item:first-child { grid-column: 1; grid-row: 1; }
+    .metrics-grid { grid-template-columns: repeat(2,1fr); }
+    .gallery-intro { grid-template-columns: 1fr; gap: 2rem; }
+    footer { flex-direction: column; gap: 1rem; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Cursor -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">Galga ✶</a>
+  <ul class="nav-links">
+    <li><a href="#about">Sobre mí</a></li>
+    <li><a href="#servicios">Servicios</a></li>
+    <li><a href="#portfolio">Portfolio</a></li>
+    <li><a href="#contacto">Contacto</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" style="padding-top:0; padding-bottom:0;">
+  <div class="hero-bg-text">GALGA</div>
+
+  <div class="hero-left">
+    <div class="hero-eyebrow">Diseñadora gráfica & fundadora</div>
+    <h1 class="hero-title">
+      El diseño<br>
+      es mi<br>
+      <em>lenguaje.</em>
+    </h1>
+    <p class="hero-tagline">
+      Construyo marcas con identidad propia. Creo sin limitaciones, me inspiro en lo inesperado y lo transformo en piezas que comunican.
+    </p>
+    <div class="hero-ctas">
+      <a href="#contacto" class="btn-primary">Trabajemos juntos</a>
+      <a href="#portfolio" class="btn-outline">Ver portfolio</a>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <!-- Instagram Card -->
+    <div class="ig-card">
+      <div class="ig-header">
+        <div class="ig-avatar-wrap">
+          <div class="ig-avatar-ring"></div>
+          <div class="ig-avatar">
+            <span class="ig-avatar-initials">OC</span>
+          </div>
+        </div>
+        <div class="ig-info">
+          <div class="ig-name">
+            Ornella ✶ Coacci
+            <span class="ig-verified" title="Verificado">
+              <svg viewBox="0 0 12 12" fill="none">
+                <path d="M2 6.5L4.5 9L10 3.5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+          </div>
+          <div class="ig-handle">@galga________</div>
+          <div class="ig-category">Diseñadora Gráfica</div>
+        </div>
+      </div>
+
+      <div class="ig-stats">
+        <div>
+          <div class="ig-stat-num">155</div>
+          <div class="ig-stat-label">Posts</div>
+        </div>
+        <div>
+          <div class="ig-stat-num">38K</div>
+          <div class="ig-stat-label">Seguidores</div>
+        </div>
+        <div>
+          <div class="ig-stat-num">543</div>
+          <div class="ig-stat-label">Siguiendo</div>
+        </div>
+      </div>
+
+      <div class="ig-bio">
+        Diseñando en @galga.estudio<br>
+        <span style="color:var(--gold); font-size:0.75rem;">✶ El diseño es mi lenguaje</span>
+      </div>
+
+      <div class="ig-actions">
+        <a href="mailto:ocoacci.estudio@gmail.com" class="ig-btn ig-btn-solid" style="text-decoration:none;">Contactar</a>
+        <span class="ig-btn ig-btn-ghost">Servicios</span>
+        <a href="https://www.instagram.com/galga________/" target="_blank" class="ig-btn ig-btn-ghost" style="text-decoration:none;">Seguir</a>
+      </div>
+
+      <div class="ig-grid">
+        <div class="ig-post"><div class="ig-post-placeholder">g</div></div>
+        <div class="ig-post"><div class="ig-post-placeholder">a</div></div>
+        <div class="ig-post"><div class="ig-post-placeholder">l</div></div>
+        <div class="ig-post"><div class="ig-post-placeholder">g</div></div>
+        <div class="ig-post"><div class="ig-post-placeholder">a</div></div>
+        <div class="ig-post"><div class="ig-post-placeholder">✶</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-decoration">Buenos Aires, Argentina</div>
+  <div class="scroll-indicator">Scroll</div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-grid">
+    <div class="about-text">
+      <div class="section-label reveal">Sobre mí</div>
+      <h2 class="section-title reveal reveal-delay-1">Diseño que<br><em>genera</em> impacto</h2>
+      <p class="reveal reveal-delay-2">
+        Soy diseñadora gráfica y fundadora de <strong>GALGA Estudio</strong>, un espacio donde la creatividad y la estrategia se encuentran para construir marcas con identidad propia.
+      </p>
+      <p class="reveal reveal-delay-2">
+        No solo diseño; analizo, conceptualizo y desarrollo ideas que potencian. Salir de lo habitual, entrar en lo disruptivo. <strong>Generar impacto.</strong>
+      </p>
+      <p class="reveal reveal-delay-2">
+        Me inspiro en el brutalismo gráfico, en la editorial, en el arte que <em>incomoda</em> y dice la verdad. Diseño que busca reacción, no solo likes.
+      </p>
+      <div class="skills-grid reveal reveal-delay-3">
+        <span class="skill-tag">Identidad de marca</span>
+        <span class="skill-tag">Branding</span>
+        <span class="skill-tag">Diseño editorial</span>
+        <span class="skill-tag">Ilustración</span>
+        <span class="skill-tag">Community Manager</span>
+        <span class="skill-tag">Marketing digital</span>
+        <span class="skill-tag">Diseño gráfico</span>
+      </div>
+    </div>
+
+    <div class="about-visual">
+      <div class="about-card reveal">
+        <p class="about-quote">"Crear sin limitaciones. Ni condiciones. En Galga el arte está en lo cotidiano."</p>
+        <div class="about-quote-author">— Ornella Coacci, Fundadora GALGA Estudio</div>
+        <div class="about-stats">
+          <div class="about-stat">
+            <span class="about-stat-num" data-target="38">0</span>
+            <span class="about-stat-label">K seguidores IG</span>
+          </div>
+          <div class="about-stat">
+            <span class="about-stat-num" data-target="155">0</span>
+            <span class="about-stat-label">Publicaciones</span>
+          </div>
+          <div class="about-stat">
+            <span class="about-stat-num" data-target="3">0</span>
+            <span class="about-stat-label">Redes activas</span>
+          </div>
+          <div class="about-stat">
+            <span class="about-stat-num">∞</span>
+            <span class="about-stat-label">Sin límites</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="servicios" class="services-section">
+  <div class="section-label reveal">Servicios</div>
+  <h2 class="section-title reveal reveal-delay-1">Más que<br><em>diseño</em></h2>
+
+  <div class="services-grid">
+    <div class="service-card reveal">
+      <div class="service-num">01</div>
+      <h3 class="service-title">Identidad & Branding</h3>
+      <p class="service-desc">Construcción de marcas con identidad propia. Logotipo, paleta, tipografía, sistema visual completo. Marcas que no solo se ven, se sienten.</p>
+    </div>
+    <div class="service-card reveal reveal-delay-1">
+      <div class="service-num">02</div>
+      <h3 class="service-title">Diseño Editorial</h3>
+      <p class="service-desc">Piezas gráficas con punto de vista. Brutalismo, editorial, layouts rotos. Diseño que busca reacción y no pide permiso para existir.</p>
+    </div>
+    <div class="service-card reveal reveal-delay-2">
+      <div class="service-num">03</div>
+      <h3 class="service-title">Estrategia Digital</h3>
+      <p class="service-desc">Community management, marketing digital y presencia en redes. Creatividad con estrategia para que tu marca compita en el mundo digital.</p>
+    </div>
+    <div class="service-card reveal reveal-delay-1">
+      <div class="service-num">04</div>
+      <h3 class="service-title">Ilustración</h3>
+      <p class="service-desc">Ilustraciones únicas que se convierten en el alma visual de una marca. Arte que comunica lo que las palabras no alcanzan.</p>
+    </div>
+    <div class="service-card reveal reveal-delay-2">
+      <div class="service-num">05</div>
+      <h3 class="service-title">Consultoría de marca</h3>
+      <p class="service-desc">Análisis, conceptualización y estrategia. Para cuando necesitás más que un logo: necesitás dirección, identidad y propósito.</p>
+    </div>
+    <div class="service-card reveal reveal-delay-3">
+      <div class="service-num">06</div>
+      <h3 class="service-title">Piezas para redes</h3>
+      <p class="service-desc">Feed coherente, stories, reels. Diseño adaptado para cada plataforma sin perder la identidad de tu marca en ningún formato.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PORTFOLIO/GALLERY -->
+<section id="portfolio">
+  <div class="gallery-intro">
+    <div>
+      <div class="section-label reveal">Portfolio</div>
+      <h2 class="section-title reveal reveal-delay-1">Trabajos<br><em>reales</em></h2>
+    </div>
+    <div>
+      <p class="reveal" style="color:rgba(245,242,237,0.5); line-height:1.8; font-size:1rem;">
+        Cada proyecto es una historia. Identidades visuales, piezas editoriales, ilustraciones. Diseño pensado desde la estrategia y ejecutado con precisión. Mirá el portfolio completo en Behance.
+      </p>
+      <a href="https://www.behance.net/ornellacoacci2" target="_blank" class="btn-outline reveal reveal-delay-1" style="margin-top:1.5rem; display:inline-block; font-size:0.75rem;">
+        Ver en Behance →
+      </a>
+    </div>
+  </div>
+
+  <div class="gallery-grid">
+    <div class="gallery-item reveal">
+      <div class="gallery-placeholder">G</div>
+      <div class="gallery-overlay"><span class="gallery-overlay-text">Identidad / Flâneur</span></div>
+    </div>
+    <div class="gallery-item reveal reveal-delay-1">
+      <div class="gallery-placeholder">A</div>
+      <div class="gallery-overlay"><span class="gallery-overlay-text">Branding</span></div>
+    </div>
+    <div class="gallery-item reveal reveal-delay-2">
+      <div class="gallery-placeholder">L</div>
+      <div class="gallery-overlay"><span class="gallery-overlay-text">Editorial</span></div>
+    </div>
+    <div class="gallery-item reveal reveal-delay-1">
+      <div class="gallery-placeholder">G</div>
+      <div class="gallery-overlay"><span class="gallery-overlay-text">Ilustración</span></div>
+    </div>
+    <div class="gallery-item reveal reveal-delay-2">
+      <div class="gallery-placeholder">A</div>
+      <div class="gallery-overlay"><span class="gallery-overlay-text">Identidad</span></div>
+    </div>
+    <div class="gallery-item reveal reveal-delay-3">
+      <div class="gallery-placeholder">✶</div>
+      <div class="gallery-overlay"><span class="gallery-overlay-text">Brutalismo</span></div>
+    </div>
+    <div class="gallery-item reveal reveal-delay-2">
+      <div class="gallery-placeholder">E</div>
+      <div class="gallery-overlay"><span class="gallery-overlay-text">Sistema visual</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- METRICS -->
+<section class="metrics-section">
+  <div class="section-label reveal">Comunidad</div>
+  <h2 class="section-title reveal reveal-delay-1">Números que<br><em>importan</em></h2>
+
+  <div class="metrics-grid">
+    <div class="metric-item reveal">
+      <span class="metric-num" data-target="38" data-suffix="K+">0</span>
+      <span class="metric-label">Seguidores en Instagram</span>
+    </div>
+    <div class="metric-item reveal reveal-delay-1">
+      <span class="metric-num" data-target="155">0</span>
+      <span class="metric-label">Publicaciones creadas</span>
+    </div>
+    <div class="metric-item reveal reveal-delay-2">
+      <span class="metric-num" data-target="100" data-suffix="+">0</span>
+      <span class="metric-label">Proyectos de diseño</span>
+    </div>
+    <div class="metric-item reveal reveal-delay-3">
+      <span class="metric-num">∞</span>
+      <span class="metric-label">Ideas sin límite</span>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contacto" class="contact-section">
+  <div class="section-label reveal">Contacto</div>
+  <h2 class="section-title reveal reveal-delay-1">¿Trabajamos<br><em>juntos?</em></h2>
+
+  <div class="contact-grid">
+    <div class="contact-info reveal">
+      <h3>Si buscás algo más que diseño, estoy lista para crear con vos.</h3>
+      <ul class="contact-links">
+        <li>
+          <a href="mailto:ocoacci.estudio@gmail.com">
+            <span class="contact-link-icon">✉</span>
+            ocoacci.estudio@gmail.com
+          </a>
+        </li>
+        <li>
+          <a href="https://www.instagram.com/galga________/" target="_blank">
+            <span class="contact-link-icon">ig</span>
+            @galga________
+          </a>
+        </li>
+        <li>
+          <a href="https://www.instagram.com/galga.estudio/" target="_blank">
+            <span class="contact-link-icon">ig</span>
+            @galga.estudio
+          </a>
+        </li>
+        <li>
+          <a href="https://www.tiktok.com/@galga.estudio" target="_blank">
+            <span class="contact-link-icon">tt</span>
+            @galga.estudio — TikTok
+          </a>
+        </li>
+        <li>
+          <a href="https://www.behance.net/ornellacoacci2" target="_blank">
+            <span class="contact-link-icon">be</span>
+            Portfolio en Behance
+          </a>
+        </li>
+        <li>
+          <a href="https://linktr.ee/galga.estudio" target="_blank">
+            <span class="contact-link-icon">🌐</span>
+            linktr.ee/galga.estudio
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="contact-form-area reveal reveal-delay-1">
+      <div class="form-group">
+        <label>Nombre</label>
+        <input type="text" placeholder="Tu nombre" />
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" placeholder="tu@email.com" />
+      </div>
+      <div class="form-group">
+        <label>Mensaje</label>
+        <textarea placeholder="Contame sobre tu proyecto..."></textarea>
+      </div>
+      <a href="mailto:ocoacci.estudio@gmail.com" class="btn-primary" style="display:inline-block; margin-top:1rem;">
+        Enviar mensaje →
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">GALGA Estudio</div>
+  <div class="footer-copy">© 2025 Ornella Coacci — Buenos Aires</div>
+  <a href="https://www.instagram.com/galga________/" target="_blank" class="footer-ig">@galga________</a>
+</footer>
+
+<script>
+(function() {
+  // Custom cursor
+  var cursor = document.getElementById('cursor');
+  var ring = document.getElementById('cursorRing');
+  var mx = 0, my = 0, rx = 0, ry = 0;
+
+  document.addEventListener('mousemove', function(e) {
+    mx = e.clientX; my = e.clientY;
+    cursor.style.left = mx + 'px';
+    cursor.style.top = my + 'px';
+  });
+
+  function animateRing() {
+    rx += (mx - rx) * 0.12;
+    ry += (my - ry) * 0.12;
+    ring.style.left = rx + 'px';
+    ring.style.top = ry + 'px';
+    requestAnimationFrame(animateRing);
+  }
+  animateRing();
+
+  document.querySelectorAll('a, button').forEach(function(el) {
+    el.addEventListener('mouseenter', function() {
+      cursor.style.width = '6px';
+      cursor.style.height = '6px';
+      ring.style.width = '56px';
+      ring.style.height = '56px';
+      ring.style.opacity = '0.8';
+    });
+    el.addEventListener('mouseleave', function() {
+      cursor.style.width = '12px';
+      cursor.style.height = '12px';
+      ring.style.width = '36px';
+      ring.style.height = '36px';
+      ring.style.opacity = '0.5';
+    });
+  });
+
+  // Intersection Observer for reveals
+  var reveals = document.querySelectorAll('.reveal');
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1 });
+
+  reveals.forEach(function(el) { observer.observe(el); });
+
+  // Counter animation
+  function animateCounter(el, target, suffix) {
+    var start = 0;
+    var duration = 1500;
+    var startTime = null;
+    suffix = suffix || '';
+
+    function step(timestamp) {
+      if (!startTime) startTime = timestamp;
+      var progress = Math.min((timestamp - startTime) / duration, 1);
+      var eased = 1 - Math.pow(1 - progress, 3);
+      var current = Math.round(eased * target);
+      el.textContent = current + suffix;
+      if (progress < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
+  var counterObserver = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        var el = entry.target;
+        var target = parseInt(el.getAttribute('data-target'));
+        var suffix = el.getAttribute('data-suffix') || '';
+        if (!isNaN(target)) {
+          animateCounter(el, target, suffix);
+          counterObserver.unobserve(el);
+        }
+      }
+    });
+  }, { threshold: 0.5 });
+
+  document.querySelectorAll('[data-target]').forEach(function(el) {
+    counterObserver.observe(el);
+  });
+
+  // Hero bg text parallax
+  var heroBg = document.querySelector('.hero-bg-text');
+  window.addEventListener('scroll', function() {
+    var scrollY = window.scrollY;
+    if (heroBg) {
+      heroBg.style.transform = 'translate(-50%, calc(-50% + ' + (scrollY * 0.3) + 'px))';
+    }
+  });
+
+  // Nav scroll effect
+  var nav = document.querySelector('nav');
+  window.addEventListener('scroll', function() {
+    if (window.scrollY > 80) {
+      nav.style.mixBlendMode = 'normal';
+      nav.style.background = 'rgba(13,13,13,0.9)';
+      nav.style.backdropFilter = 'blur(10px)';
+    } else {
+      nav.style.mixBlendMode = 'difference';
+      nav.style.background = 'transparent';
+      nav.style.backdropFilter = 'none';
+    }
+  });
+
+})();
+</script>
+</body>
+</html>
